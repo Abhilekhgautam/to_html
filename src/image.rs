@@ -54,7 +54,7 @@ mod tests{
        alt    : Some("Abhilekh Gautam's profile picture".to_string()),
        height : None,
        width  : None,
-     }), r#"<img src = "https://abhi-lekhgautam.web.app/pp" alt = "Abhilekh Gautam's profile picture" height = "500" width = "500" />"#.to_string());
+     }), r#"<img src = "https://abhi-lekhgautam.web.app/pp" alt = "Abhilekh Gautam's profile picture" height = "500" width = "500"/>"#.to_string());
 
    }
 }
