@@ -1,4 +1,3 @@
-
 /// unordered_list is the html's equivalent of ul tag
 pub struct UnorderedList {
     list_items: Vec<String>,
@@ -6,15 +5,13 @@ pub struct UnorderedList {
 
 /// this function generates equivalent html code for a given unordered_list
 /// this returns html code as an String
-fn generate_unordered_list(UnorderedList{list_items}: UnorderedList) -> String {
-   let list_item = list_items.into_iter()
-       .map(|item|{
+fn generate_unordered_list(UnorderedList { list_items }: UnorderedList) -> String {
+    let list_item = list_items
+        .into_iter()
+        .map(|item| format!("<li>{item}</li>"))
+        .collect::<String>();
 
-          format!("<li>{item}</li>")
-
-       }).collect::<String>();
-
-   format!("<ul>{list_item}</ul>")
+    format!("<ul>{list_item}</ul>")
 }
 
 #[cfg(test)]
