@@ -9,9 +9,53 @@ enum HeadingType {
 }
 
 #[derive(PartialEq, Debug)]
-pub struct Heading {
+pub struct Heading<'a> {
     heading_type: HeadingType,
-    text: String,
+    text: &'a str,
+}
+
+impl<'a> Heading<'a> {
+    fn new(s: &'a str) -> Self {
+        let mut heading_type = HeadingType::H1;
+        let mut text = "";
+        if s.starts_with("######") {
+            heading_type = HeadingType::H6;
+            text = match s.strip_prefix("######") {
+                Some(txt) => txt,
+                None => " ",
+            };
+        } else if s.starts_with("#####") {
+            heading_type = HeadingType::H5;
+            text = match s.strip_prefix("#####") {
+                Some(txt) => txt,
+                None => " ",
+            };
+        } else if s.starts_with("####") {
+            heading_type = HeadingType::H4;
+            text = match s.strip_prefix("####") {
+                Some(txt) => txt,
+                None => " ",
+            };
+        } else if s.starts_with("###") {
+            heading_type = HeadingType::H3;
+            text = match s.strip_prefix("###") {
+                Some(txt) => txt,
+                None => " ",
+            };
+        } else if s.starts_with("##") {
+            heading_type = HeadingType::H2;
+            text = match s.strip_prefix("##") {
+                Some(txt) => txt,
+                None => " ",
+            };
+        } else {
+            text = match s.strip_prefix("#") {
+                Some(txt) => txt,
+                None => " ",
+            };
+        }
+        Heading { heading_type, text }
+    }
 }
 
 fn generate_heading(Heading { heading_type, text }: Heading) -> String {
@@ -35,7 +79,7 @@ mod tests {
         assert_eq!(
             generate_heading(Heading {
                 heading_type: HeadingType::H1,
-                text: "Hello, World".to_string(),
+                text: "Hello, World",
             }),
             "<h1> Hello, World </h1>".to_string()
         );
@@ -43,7 +87,7 @@ mod tests {
         assert_eq!(
             generate_heading(Heading {
                 heading_type: HeadingType::H2,
-                text: "Hello, World".to_string(),
+                text: "Hello, World",
             }),
             "<h2> Hello, World </h2>".to_string()
         );
