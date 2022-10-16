@@ -1,5 +1,16 @@
+mod code_block;
 mod heading;
 mod image;
 mod ordered_list;
+mod parser;
 mod unordered_list;
-mod code_block;
+
+use std::fs;
+
+fn main() {
+    let file = fs::read_to_string("/home/abhilekh/Downloads/test.txt").unwrap();
+
+    //parse and generate an equivalent html file
+
+    let html_file_path = parser::parse(file).unwrap();
+}
