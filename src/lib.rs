@@ -7,6 +7,10 @@ mod unordered_list;
 
 use std::fs;
 
+trait HtmlGenerator{
+    fn generate_html(&self) -> String;
+}
+
 fn main() {
     let file = fs::read_to_string("/home/abhilekh/Downloads/test.txt").unwrap();
 
