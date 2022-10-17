@@ -4,6 +4,7 @@ mod image;
 mod ordered_list;
 mod parser;
 mod unordered_list;
+mod anchor;
 
 use std::fs;
 
