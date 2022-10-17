@@ -1,9 +1,41 @@
 const KEYWORDS: &[&str] = &["int", "main", "std"];
 const OPERATORS: &[&str] = &["()", "::", "{\n", "}"];
 
-struct CodeBlock {
-    text: String,
+struct CodeBlock<'a> {
+    text: &'a str,
     //styling : style;
+}
+
+impl<'a> CodeBlock<'a> {
+    fn new(s: &'a str) -> Self {
+        if s.starts_with("```") && s.ends_with("```") {
+            let stripped_text_front = match s.strip_prefix("```") {
+                Some(str) => str,
+                None => "",
+            };
+            let stripped_text = match stripped_text_front.strip_suffix("```") {
+                Some(str) => str,
+                None => "",
+            };
+
+            CodeBlock {
+                text: stripped_text,
+            }
+        } else {
+            let stripped_text_front = match s.strip_prefix("`") {
+                Some(str) => str,
+                None => "",
+            };
+            let stripped_text = match stripped_text_front.strip_suffix("`") {
+                Some(str) => str,
+                None => "",
+            };
+
+            CodeBlock {
+                text: stripped_text,
+            }
+        }
+    }
 }
 
 fn generate_codeblock(CodeBlock { text }: CodeBlock) -> String {
@@ -24,12 +56,6 @@ fn generate_codeblock(CodeBlock { text }: CodeBlock) -> String {
     }
     format!(r#"<div class = "main-container"><pre>{main_code}</pre></div>"#)
 }
-fn insert_inside_pre_keyword(items: &String) -> String {
-    format!(r#"<pre class = "keyword"> {items} </pre>"#)
-}
-fn insert_inside_pre_operator(items: &String) -> String {
-    format!(r#"<pre class  = "operator">"#)
-}
 
 fn is_keyword(elm: &str) -> bool {
     KEYWORDS.contains(&elm)
@@ -49,7 +75,7 @@ mod tests {
 
       text: r#"int main(){
    std::cout << "Hello, World";
-   }"#.to_string()
+   }"#
 
     }), r#"<div class = "main-container"><pre><pre class = "keyword">int</pre> main(){\n   std::cout << "Hello, World";\n   <pre class = "operator">}</pre> </pre></div>"#.to_string()
 
