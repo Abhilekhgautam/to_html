@@ -1,3 +1,4 @@
+use crate::HtmlGenerator;
 #[derive(PartialEq, Debug)]
 enum HeadingType {
     H1,
@@ -56,18 +57,24 @@ impl<'a> Heading<'a> {
         }
         Heading { heading_type, text }
     }
+
 }
 
-fn generate_heading(Heading { heading_type, text }: Heading) -> String {
-    match heading_type {
-        HeadingType::H1 => format!("<h1> {text} </h1>"),
-        HeadingType::H2 => format!("<h2> {text} </h2>"),
-        HeadingType::H3 => format!("<h3> {text} </h3>"),
-        HeadingType::H4 => format!("<h4> {text} </h4>"),
-        HeadingType::H5 => format!("<h5> {text} </h5>"),
-        HeadingType::H6 => format!("<h6> {text} </h6>"),
+impl<'a> HtmlGenerator for Heading<'a>{
+    fn generate_html(&self) -> String {
+        let text = self.text;
+        match self.heading_type {
+            HeadingType::H1 => format!("<h1> {text} </h1>"),
+            HeadingType::H2 => format!("<h2> {text} </h2>"),
+            HeadingType::H3 => format!("<h3> {text} </h3>"),
+            HeadingType::H4 => format!("<h4> {text} </h4>"),
+            HeadingType::H5 => format!("<h5> {text} </h5>"),
+            HeadingType::H6 => format!("<h6> {text} </h6>"),
+        }
     }
 }
+
+
 
 #[cfg(test)]
 mod tests {
@@ -76,20 +83,10 @@ mod tests {
 
     #[test]
     fn generates_heading() {
+        let heading = Heading::new("# Hello, World");
         assert_eq!(
-            generate_heading(Heading {
-                heading_type: HeadingType::H1,
-                text: "Hello, World",
-            }),
+            heading.generate_html(),
             "<h1> Hello, World </h1>".to_string()
-        );
-
-        assert_eq!(
-            generate_heading(Heading {
-                heading_type: HeadingType::H2,
-                text: "Hello, World",
-            }),
-            "<h2> Hello, World </h2>".to_string()
         );
     }
 }

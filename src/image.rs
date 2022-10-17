@@ -1,3 +1,4 @@
+use crate::HtmlGenerator;
 ///This represents img tag in html.
 /// The height and width of the Image defaults to 500.
 #[derive(PartialEq, Debug)]
@@ -57,25 +58,27 @@ impl<'a> Image<'a> {
     }
 }
 
-fn generate_image(img: Image) -> String {
-    let alt = match img.alt {
-        Some(str) => str,
-        None => "",
-    };
-
-    let height = match img.height {
-        Some(str) => str,
-        None => "500",
-    };
-
-    let width = match img.width {
-        Some(str) => str,
-        None => "500",
-    };
-
-    let src = img.src;
-
-    format!(r#"<img src = "{src}" alt = "{alt}" height = "{height}" width = "{width}"/>"#)
+impl <'a>HtmlGenerator for Image<'a>{
+    fn generate_html(&self) -> String {
+        let alt = match self.alt {
+            Some(str) => str,
+            None => "",
+        };
+    
+        let height = match self.height {
+            Some(str) => str,
+            None => "500",
+        };
+    
+        let width = match self.width {
+            Some(str) => str,
+            None => "500",
+        };
+    
+        let src = self.src;
+    
+        format!(r#"<img src = "{src}" alt = "{alt}" height = "{height}" width = "{width}"/>"#)
+    }
 }
 
 #[cfg(test)]
@@ -85,12 +88,7 @@ mod tests {
 
     #[test]
     fn generates_img() {
-        assert_eq!(generate_image(Image {
-
-       src    : "https://abhi-lekhgautam.web.app/pp",
-       alt    : Some("Abhilekh Gautam's profile picture"),
-       height : None,
-       width  : None,
-     }), r#"<img src = "https://abhi-lekhgautam.web.app/pp" alt = "Abhilekh Gautam's profile picture" height = "500" width = "500"/>"#.to_string());
+        let image = Image::new(r#"https://abhi-lekhgautam.web.app/pp, Some("Abhilekh Gautam's profile picture"), None, None"#);
+        assert_eq!(image.generate_html(), r#"<img src = "https://abhi-lekhgautam.web.app/pp" alt = "Abhilekh Gautam's profile picture" height = "500" width = "500"/>"#.to_string());
     }
 }
