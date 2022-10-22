@@ -2,15 +2,15 @@ use crate::HtmlGenerator;
 ///This represents img tag in html.
 /// The height and width of the Image defaults to 500.
 #[derive(PartialEq, Debug)]
-struct Image<'a> {
+pub struct Image<'a> {
     src: &'a str,
-    alt: Option<&'a str>,
+    alt: &'a str,
     height: Option<&'a str>,
     width: Option<&'a str>,
 }
 
 impl<'a> Image<'a> {
-    fn new(s: &'a str) -> Self {
+    pub fn new(s: &'a str) -> Self {
         let stripped_img_front = match s.strip_prefix("img(") {
             Some(str) => str,
             None => "",
@@ -29,42 +29,32 @@ impl<'a> Image<'a> {
         } else if param_nos == 4 {
             Image {
                 src: param[0],
-                alt: Some(param[1]),
+                alt: param[1],
                 height: Some(param[2]),
                 width: Some(param[3]),
             }
         } else if param_nos == 3 {
             Image {
                 src: param[0],
-                alt: Some(param[1]),
+                alt: param[1],
                 height: Some(param[2]),
-                width: None,
-            }
-        } else if param_nos == 2 {
-            Image {
-                src: param[0],
-                alt: Some(param[1]),
-                height: None,
                 width: None,
             }
         } else {
             Image {
                 src: param[0],
-                alt: None,
+                alt: param[1],
                 height: None,
                 width: None,
             }
-        }
+        } 
     }
 }
 
 impl <'a>HtmlGenerator for Image<'a>{
     fn generate_html(&self) -> String {
-        let alt = match self.alt {
-            Some(str) => str,
-            None => "",
-        };
-    
+        let alt = self.alt 
+           
         let height = match self.height {
             Some(str) => str,
             None => "500",
