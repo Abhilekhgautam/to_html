@@ -17,7 +17,7 @@ pub struct Heading<'a> {
 }
 
 impl<'a> Heading<'a> {
-    fn new(s: &'a str) -> Self {
+    pub fn new(s: &'a str) -> Self {
         let mut heading_type = HeadingType::H1;
         let mut text = "";
         if s.starts_with("######") {
