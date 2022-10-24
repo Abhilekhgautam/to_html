@@ -17,5 +17,5 @@ fn main() {
 
     //parse and generate an equivalent html file
 
-    let html_file_path = parser::parse(file).unwrap();
+    let html_file_path = parser::parse(file);
 }
